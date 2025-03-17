@@ -20,15 +20,35 @@ function App() {
     } catch (error) {
       console.error("Error:", error);
     }
-  }; 
+  };
 
   useEffect(() => {
     handleGetData();
+  }, []);
+
+  const [telegramUser, setTelegramUser] = useState(null);
+
+  useEffect(() => {
+    // Define the global callback function
+    window.handleTelegramResponse = function (user) {
+      console.log("Telegram user:", user);
+      setTelegramUser(user);
+    };
   }, []);
   return (
     <Router>
       <NavbarMenu />
       <div className="mt-4">
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <h1>Login with Telegram</h1>
+          {telegramUser ? (
+            <div style={{ marginTop: "20px", fontSize: "1.2em" }}>
+              Telegram ID: {telegramUser.id}
+            </div>
+          ) : (
+            <p>Please log in using the Telegram widget above.</p>
+          )}
+        </div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/exchange" element={<Exchange />} />
