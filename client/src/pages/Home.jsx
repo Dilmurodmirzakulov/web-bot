@@ -1,48 +1,37 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-function HomePage() {
-  const [telegramId, setTelegramId] = useState(null);
-  const [error, setError] = useState(null);
+export default function Home() {
+  // Use state to store the Telegram user data
+  const [telegramUser, setTelegramUser] = useState(null);
 
   useEffect(() => {
-    // Check that Telegram Web App API is available
-    if (window.Telegram == null || window.Telegram.WebApp == null) {
-      setError(
-        "Telegram WebApp API not found. Please open this page in Telegram."
-      );
-      return;
-    }
-
-    try {
-      // Initialize the Telegram Web App (tell Telegram we are ready)
-      window.Telegram.WebApp.ready();
-
-      // Get user data from Telegram Web App init data
-      const user = window.Telegram.WebApp.initDataUnsafe?.user;
-      if (user && user.id) {
-        setTelegramId(user.id); // Save the Telegram user ID to state
-      } else {
-        setError("Telegram user data not available.");
-      }
-    } catch (err) {
-      console.error("Telegram WebApp init error:", err);
-      setError("Error retrieving Telegram user data.");
-    }
-  }, []); // Empty dependency array -> runs once on component mount
+    // Define the global callback that Telegram will call after login
+    window.handleTelegramResponse = function (user) {
+      console.log("Telegram user:", user);
+      setTelegramUser(user);
+    };
+  }, []);
 
   return (
-    <div>
-      <h1>Home Page</h1>
-      {telegramId ? (
-        <p>
-          Your Telegram ID: <strong>{telegramId}</strong>
-        </p>
-      ) : (
-        // Show an error or loading message if ID is not available
-        <p>{error ? error : "Loading Telegram data..."}</p>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>Login with Telegram</h1>
+      {/* Telegram login widget */}
+      <script
+        async
+        src="https://telegram.org/js/telegram-widget.js?7"
+        data-telegram-login="YourBotUsername" // Replace with your bot username
+        data-size="large"
+        data-userpic="false"
+        data-request-access="write"
+        data-onauth="handleTelegramResponse"
+      ></script>
+
+      {/* Display the Telegram ID if available */}
+      {telegramUser && (
+        <div style={{ marginTop: "20px", fontSize: "1.2em" }}>
+          Telegram ID: {telegramUser.id}
+        </div>
       )}
     </div>
   );
 }
-
-export default HomePage;
