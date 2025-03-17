@@ -15,16 +15,16 @@ import { ExchangeDataContext } from "../ExchangeDataContext";
 import { getOrders } from "../api/orders";
 const tg = window.Telegram.WebApp;
 
-let tgConverted = JSON.parse(
-  '{"' +
-    (((window.Telegram || {}).WebApp || {}).initData || "")
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"') +
-    '"}',
-  function (key, value) {
-    return key === "" ? value : decodeURIComponent(value);
-  }
-);
+// let tgConverted = JSON.parse(
+//   '{"' +
+//     (((window.Telegram || {}).WebApp || {}).initData || "")
+//       .replace(/&/g, '","')
+//       .replace(/=/g, '":"') +
+//     '"}',
+//   function (key, value) {
+//     return key === "" ? value : decodeURIComponent(value);
+//   }
+// );
 
 function Home() {
   const navigate = useNavigate();
@@ -103,12 +103,11 @@ function Home() {
     tg.enableClosingConfirmation();
   }, []);
 
-  useEffect(() => {
-    const userId = JSON.parse(tgConverted?.user)?.id;
-    setTgId(userId);
-  }, [JSON.parse(tgConverted?.user)?.id]);
+  // useEffect(() => {
+  //   const userId = JSON.parse(tgConverted?.user)?.id;
+  //   setTgId(userId);
+  // }, [JSON.parse(tgConverted?.user)?.id]);
 
-  console.log("data", data);
   return (
     <Container className="text-center mt-5">
       <h1>{tgId}</h1>
