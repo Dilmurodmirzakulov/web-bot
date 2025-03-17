@@ -15,16 +15,15 @@ import { ExchangeDataContext } from "../ExchangeDataContext";
 import { getOrders } from "../api/orders";
 const tg = window.Telegram.WebApp;
 
-// let tgConverted = JSON.parse(
-//   '{"' +
-//     (((window.Telegram || {}).WebApp || {}).initData || "")
-//       .replace(/&/g, '","')
-//       .replace(/=/g, '":"') +
-//     '"}',
-//   function (key, value) {
-//     return key === "" ? value : decodeURIComponent(value);
-//   }
-// );
+function parseInitData(initData) {
+  if (!initData) return {};
+  const params = new URLSearchParams(initData);
+  const result = {};
+  for (const [key, value] of params.entries()) {
+    result[key] = value;
+  }
+  return result;
+}
 
 function Home() {
   const navigate = useNavigate();
@@ -103,10 +102,11 @@ function Home() {
     tg.enableClosingConfirmation();
   }, []);
 
-  // useEffect(() => {
-  //   const userId = JSON.parse(tgConverted?.user)?.id;
-  //   setTgId(userId);
-  // }, [JSON.parse(tgConverted?.user)?.id]);
+  useEffect(() => {
+    const tgData = parseInitData(window.Telegram?.WebApp?.initData);
+    const userId = tgData.user ? JSON.parse(tgData.user).id : null;
+    setTgId(userId);
+  }, [JSON.parse(tgConverted?.user)?.id]);
 
   return (
     <Container className="text-center mt-5">
