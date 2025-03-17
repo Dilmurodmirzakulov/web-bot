@@ -21,8 +21,8 @@ function Home() {
 
   return (
     <>
-      <div className="App">
-        <h1>{userId}</h1>
+      <div>
+        <h1>testtttt user id{userId}</h1>
       </div>
     </>
   );
