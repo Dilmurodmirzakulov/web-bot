@@ -2,18 +2,6 @@ import { useEffect, useState } from "react";
 
 const tg = window.Telegram.WebApp;
 
-let tgConverted = JSON.parse(
-  '{"' +
-    (((window.Telegram || {}).WebApp || {}).initData || "")
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"') +
-    '"}',
-  function (key, value) {
-    return key === "" ? value : decodeURIComponent(value);
-  }
-);
-// let tgConverted = {};
-
 function Home() {
   const [userId, setUserId] = useState(0);
   useEffect(() => {
@@ -25,8 +13,11 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    setUserId(JSON.parse(tgConverted?.user)?.id);
-  }, [JSON.parse(tgConverted?.user)?.id]);
+    const id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
+    console.log("Telegram User ID:", userId);
+
+    setUserId(id);
+  }, []);
 
   return (
     <>
