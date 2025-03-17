@@ -1,61 +1,41 @@
-// server/index.js
-const express = require("express");
 const { Telegraf } = require("telegraf");
 
+// Replace 'YOUR_BOT_TOKEN' with the token from BotFather
 const BOT_TOKEN = "7122549198:AAGqWggl2uLgxJpDbBWHsQdztAE9a8MVDkI";
 const WEBAPP_URL = "https://web-bot-brown.vercel.app/";
-
 const bot = new Telegraf(BOT_TOKEN);
 
-// Basic commands:
-bot.start((ctx) => {
-  return ctx.reply("Welcome! Open our WebApp below:", {
+// Handle the /start command
+bot.command("start", (ctx) => {
+  ctx.reply("Welcome! Click below to open the web app:", {
     reply_markup: {
-      keyboard: [
+      inline_keyboard: [
         [
           {
-            text: "Open Exchange WebApp",
-            web_app: { url: WEBAPP_URL },
+            text: "Open Web App",
+            web_app: { url: WEBAPP_URL }, // Replace with your Vercel URL
           },
         ],
       ],
-      resize_keyboard: true,
-      one_time_keyboard: false,
     },
   });
 });
 
-bot.help((ctx) => ctx.reply("Send /start"));
-
-// Launch the bot with long polling, then set a global Chat Menu Button
-bot.launch().then(async () => {
-  console.log("Bot started with long polling!");
-  try {
-    await bot.telegram.setChatMenuButton({
-      menu_button: {
-        type: "web_app",
-        text: "Open Exchange WebApp",
-        web_app: { url: WEBAPP_URL },
-      },
-    });
-    console.log("Chat menu button set successfully!");
-  } catch (err) {
-    console.error("Error setting chat menu button:", err);
-  }
+// Optionally, set the menu button to open the web app directly
+bot.launch().then(() => {
+  bot.telegram.setChatMenuButton({
+    menu_button: {
+      type: "web_app",
+      text: "Open Web App",
+      web_app: { url: WEBAPP_URL }, // Replace with your Vercel URL
+    },
+  });
+  console.log("Bot started and menu button set.");
 });
 
-// Express server for any extra endpoints
-const app = express();
-app.use(express.json());
+// Start the bot
+bot.launch();
 
-app.get("/", (req, res) => {
-  res.send("Server up and running");
-});
-
-app.listen(3001, () => {
-  console.log("Server is listening on port 3001");
-});
-
-// Graceful stop
+// Handle graceful shutdown
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
