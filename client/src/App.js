@@ -20,7 +20,7 @@ function App() {
     } catch (error) {
       console.error("Error:", error);
     }
-  };
+  }; 
 
   useEffect(() => {
     handleGetData();
