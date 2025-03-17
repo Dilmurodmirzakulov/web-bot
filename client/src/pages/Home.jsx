@@ -14,7 +14,7 @@ function Home() {
 
   useEffect(() => {
     const id = window.Telegram.WebApp.initDataUnsafe?.user?.id;
-    console.log("Telegram User ID:", userId);
+    console.log("Telegram User ID:", window.Telegram.WebApp.initDataUnsafe);
 
     setUserId(id);
   }, []);

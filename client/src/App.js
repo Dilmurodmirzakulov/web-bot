@@ -13,7 +13,6 @@ import { ExchangeDataContext } from "./ExchangeDataContext";
 
 function App() {
   const { setData } = useContext(ExchangeDataContext);
-  const [telegramData, setTelegramData] = useState("");
   const handleGetData = async () => {
     try {
       const res = await getData("692196525");
@@ -24,24 +23,11 @@ function App() {
   };
 
   useEffect(() => {
-    const initData = window.Telegram?.WebApp?.initData;
-    if (initData) {
-      const params = new URLSearchParams(initData);
-      const data = Object.fromEntries(params.entries());
-      setTelegramData(data);
-      console.log("Telegram data:", data);
-    } else {
-      console.error("No Telegram initData available.");
-    }
-  }, []);
-
-  useEffect(() => {
     handleGetData();
   }, []);
   return (
     <Router>
       <NavbarMenu />
-      <p>tg id: {JSON.stringify(telegramData)}</p>
       <div className="mt-4">
         <Routes>
           <Route path="/" element={<Home />} />
