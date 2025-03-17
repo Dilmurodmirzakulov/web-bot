@@ -19,7 +19,7 @@ export default function Home() {
       <script
         async
         src="https://telegram.org/js/telegram-widget.js?7"
-        data-telegram-login="YourBotUsername" // Replace with your bot username
+        data-telegram-login="test_development_process_bot" // Replace with your bot username
         data-size="large"
         data-userpic="false"
         data-request-access="write"
