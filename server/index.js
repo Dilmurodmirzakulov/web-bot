@@ -3,7 +3,7 @@ const express = require("express");
 const { Telegraf } = require("telegraf");
 
 const BOT_TOKEN = "7122549198:AAGqWggl2uLgxJpDbBWHsQdztAE9a8MVDkI";
-const WEBAPP_URL = "https://web-bot-brown.vercel.app/"; // Must be HTTPS & set in BotFather
+const WEBAPP_URL = "https://web-bot-brown.vercel.app/";
 
 const bot = new Telegraf(BOT_TOKEN);
 
